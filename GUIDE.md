@@ -1,6 +1,6 @@
 # FastAPI 2026: большой учебник для абсолютного новичка
 
-Актуально на **6 мая 2026** для этого проекта:
+Актуально на **15 мая 2026** для этого проекта:
 
 - Python: `>=3.14` из `pyproject.toml`
 - FastAPI: `0.136.1`
@@ -11,6 +11,22 @@
 - Текущая точка входа: `main:app`
 
 Этот файл написан как учебник и как шпаргалка одновременно. Его цель - не просто дать команды, а объяснить, **почему FastAPI устроен именно так**, почему используются такие названия, сокращения и теги, и как из одного маленького файла `main.py` вырасти до нормального API-проекта.
+
+Учебник основан на официальной документации FastAPI: **Tutorial - User Guide**, **Advanced User Guide**, **Reference**, **FastAPI CLI** и разделах Deployment. Я не копирую документацию дословно, а пересобираю ее для новичка: проще, подробнее, с объяснением названий, сокращений, ошибок и практических шагов именно для этого проекта.
+
+## Назначение этого гайда
+
+Этот `GUIDE.md` - главный учебный документ проекта. Его задача:
+
+- объяснить FastAPI новичку с нуля;
+- перевести ключевые идеи официальной документации на понятный русский язык;
+- сохранить английские термины там, где они нужны для чтения документации, кода и ошибок;
+- дать строгую структуру обучения;
+- показать много маленьких примеров;
+- объяснить не только "как написать", но и "почему так называется" и "почему так работает";
+- связать каждую важную тему с официальной документацией FastAPI.
+
+Этот чат дальше используется только для работы над этим гайдом: анализа, проверки, улучшения структуры, актуализации по официальной документации и повышения понятности для новичка.
 
 ## Как пользоваться этим учебником
 
@@ -32,6 +48,126 @@
 - **Усложнять**: добавить проверку, ошибку, модель, тест.
 
 Если ты можешь объяснить код без подсказки, ты его действительно выучил.
+
+## Строгая структура учебника
+
+Чтобы учебник был не хаотичной шпаргалкой, а понятным маршрутом обучения, он делится на смысловые части.
+
+| Часть | Главы | Задача |
+|---|---:|---|
+| A. Ориентация в проекте | 1, 4 | понять файлы проекта, окружение, запуск |
+| B. База веба | 2, 5, 6, 7 | понять API, HTTP, URL, path/query/body |
+| C. Первый FastAPI-код | 3, 8, 14, 15, 42, 43, 44 | понять приложение, декораторы, типы, функции |
+| D. Данные и валидация | 9, 10, 16, 45, 49, 50, 51, 52, 53, 54 | научиться принимать, проверять и возвращать данные |
+| E. Документация API | 23, 47, 76 | понять `/docs`, OpenAPI, tags, summary, metadata |
+| F. Архитектура | 13, 17, 18, 55, 78 | понять зависимости, роутеры, слои приложения |
+| G. Практические возможности | 24, 25, 26, 27, 29, 30, 74, 75, 77, 80 | headers, cookies, forms, files, CORS, middleware, lifespan |
+| H. Безопасность и база | 20, 21, 28, 56, 57, 58, 79 | понять БД, миграции, auth, JWT, password hashing |
+| I. Качество и production | 22, 32, 33, 59, 60, 61, 62, 63, 64 | тесты, отладка, логи, контракт API, deployment |
+| J. Учебная практика | 34, 35, 36, 37, 38, 39, 40, 65, 66, 67, 68, 69, 70 | закрепить знания упражнениями и мини-проектами |
+| K. Official-дополнения | 71-80 | темы, которые в документации FastAPI вынесены отдельными страницами |
+
+### Единый формат изучения любой темы
+
+Для каждой новой темы используй один и тот же порядок:
+
+1. **Что это** - короткое определение.
+2. **Зачем нужно** - какую проблему решает.
+3. **Минимальный пример** - самый маленький рабочий код.
+4. **Разбор строк** - что значит каждая строка.
+5. **Типичная ошибка** - что чаще всего ломает новичок.
+6. **Проверка** - как увидеть результат в `/docs`, браузере, `curl` или тесте.
+7. **Связь с official docs** - какой раздел официальной документации читать после этого.
+
+### Правило перевода терминов
+
+В FastAPI нельзя полностью отказаться от английского, потому что код, ошибки, документация и OpenAPI используют английские названия. Поэтому в этом гайде используется формат:
+
+```text
+русское объяснение + английский термин в скобках
+```
+
+Пример:
+
+- путь (`path`);
+- запрос (`request`);
+- ответ (`response`);
+- тело запроса (`request body`);
+- зависимость (`dependency`);
+- промежуточный слой (`middleware`);
+- схема ответа (`response model`);
+- операция пути (`path operation`).
+
+Так новичку понятен смысл по-русски, но он одновременно учит реальные термины, которые встретит в официальной документации.
+
+### Критерии качества этого гайда
+
+Любое будущее улучшение `GUIDE.md` должно проходить по чеклисту:
+
+- тема объяснена с нуля;
+- есть русский перевод смысла;
+- английский термин сохранен, если он нужен для кода или документации;
+- есть минимальный рабочий пример;
+- пример можно запустить в этом проекте или легко адаптировать;
+- сложные строки разобраны;
+- указана типичная ошибка новичка;
+- есть способ проверки результата;
+- тема не противоречит официальной документации FastAPI;
+- если информация зависит от версий, указана дата актуализации;
+- структура остается строгой: новая тема попадает в подходящую часть учебника.
+
+Если раздел не проходит этот чеклист, его нужно доработать, а не просто расширять объемом.
+
+## Как этот учебник связан с официальной документацией FastAPI
+
+Официальная документация FastAPI устроена очень грамотно: она ведет от простого `main.py` к полноценному приложению. Этот `GUIDE.md` повторяет ту же логику, но добавляет объяснения "для совсем новичка".
+
+| Официальный раздел FastAPI | Где в этом учебнике | Что ты должен понять |
+|---|---:|---|
+| Python Types Intro | 41, 44 | зачем FastAPI нужны type hints |
+| Virtual Environments | 1, 4 | зачем `.venv`, `pyproject.toml`, `uv.lock` |
+| First Steps | 1, 3, 4, 5, 42, 43 | как рождается минимальное приложение |
+| Path Parameters | 7, 8, 15, 45 | как FastAPI берет данные из URL |
+| Query Parameters | 7, 8, 48, 51 | как работают параметры после `?` |
+| Request Body | 7, 9, 16 | как Pydantic-модель становится body |
+| Query Validations | 8, 51 | `Query`, `min_length`, `max_length`, `ge`, `le` |
+| Path Validations | 8, 15, 16 | `Path`, ограничения чисел, порядок маршрутов |
+| Query Parameter Models | 71 | как группировать query-параметры в модель |
+| Body - Multiple Parameters | 72 | как принимать path + query + несколько body |
+| Body - Fields | 8, 9, 72 | чем `Field` отличается от `Query` |
+| Body - Nested Models | 9, 73 | вложенные Pydantic-модели |
+| Extra Data Types | 73 | `datetime`, `UUID`, `EmailStr`, `Decimal` |
+| Cookie/Header Parameters | 24, 74 | `Cookie`, `Header`, underscore conversion |
+| Response Model | 10, 49, 64 | как FastAPI фильтрует и валидирует ответ |
+| Response Status Code | 11, 16, 50 | `201`, `204`, `404`, `422` |
+| Form Data / Request Files | 24, 75 | формы, файлы, `UploadFile` |
+| Handling Errors | 12, 45, 54, 60 | `HTTPException`, `422`, бизнес-ошибки |
+| Path Operation Configuration | 23, 47, 76 | `summary`, `description`, `operation_id`, `deprecated` |
+| JSON Compatible Encoder | 77 | как превращать модели и даты в JSON-compatible данные |
+| Body - Updates | 16, 50 | `PATCH`, `exclude_unset=True`, `model_copy` |
+| Dependencies | 13, 55, 78 | `Depends`, sub-dependencies, yield dependencies |
+| Security | 28, 58, 79 | OAuth2, Bearer token, password hashing, JWT |
+| Middleware | 26, 61, 62 | промежуточная обработка запроса |
+| CORS | 25 | почему frontend с другого origin блокируется |
+| SQL Databases | 20, 21, 56, 57 | SQL, ORM, session, migrations |
+| Bigger Applications | 17, 18, 55 | `APIRouter`, модули, структура проекта |
+| Background Tasks | 29 | маленькие задачи после ответа |
+| Metadata and Docs URLs | 23, 76 | title/version/docs_url/openapi_url |
+| Static Files | 80 | как отдавать CSS/JS/images |
+| Testing | 22, 59, 66 | `TestClient`, happy path, ошибки |
+| Debugging | 60 | как читать traceback и ошибки |
+| FastAPI CLI | 4 | `fastapi dev`, `fastapi run`, `entrypoint` |
+| Deployment | 33 | production-чеклист, HTTPS, workers, env |
+
+Как работать с этой таблицей:
+
+1. Выбери тему в официальной документации.
+2. Найди соответствующую главу в `GUIDE.md`.
+3. Сначала прочитай объяснение здесь.
+4. Потом открой официальный раздел и сравни.
+5. Перепиши пример руками в `main.py`.
+
+Так ты учишься не "по пересказу", а рядом с официальной документацией.
 
 ## 1. Что уже есть в проекте
 
@@ -3431,9 +3567,673 @@ FastAPI лучше всего изучать спиралью:
 
 Если это выполняется, ты уже пишешь хороший FastAPI-код.
 
+## 71. Query Parameter Models
+
+Официальная документация FastAPI отдельно показывает **Query Parameter Models**. Идея простая: если query-параметров много, их можно собрать в Pydantic-модель.
+
+Обычный вариант:
+
+```python
+from typing import Annotated
+from fastapi import Query
+
+@app.get("/items")
+def list_items(
+    limit: Annotated[int, Query(ge=1, le=100)] = 20,
+    offset: Annotated[int, Query(ge=0)] = 0,
+    order_by: str = "created_at",
+) -> dict[str, int | str]:
+    return {"limit": limit, "offset": offset, "order_by": order_by}
+```
+
+Когда параметров становится много, сигнатура функции разрастается.
+
+Вариант с моделью:
+
+```python
+from typing import Annotated, Literal
+
+from fastapi import Query
+from pydantic import BaseModel, Field
+
+class PaginationParams(BaseModel):
+    limit: int = Field(default=20, ge=1, le=100)
+    offset: int = Field(default=0, ge=0)
+    order_by: Literal["created_at", "name", "price"] = "created_at"
+
+@app.get("/items")
+def list_items(
+    params: Annotated[PaginationParams, Query()]
+) -> PaginationParams:
+    return params
+```
+
+Почему это полезно:
+
+- параметры можно переиспользовать;
+- endpoint становится короче;
+- ограничения живут рядом;
+- модель видна в документации.
+
+Почему `Literal`:
+
+- literal - "буквальное значение";
+- клиент может передать только одно из перечисленных значений;
+- это удобно для сортировки, фильтров и режимов.
+
+Когда использовать:
+
+- фильтры каталога;
+- пагинация;
+- сортировка;
+- поисковые параметры;
+- repeated query groups.
+
+Когда не использовать:
+
+- если параметра всего два;
+- если модель усложняет чтение;
+- если ты еще только учишься path/query/body.
+
+## 72. Body - Multiple Parameters
+
+Официальная документация показывает, что endpoint может принимать одновременно:
+
+- path parameters;
+- query parameters;
+- body model;
+- несколько body-параметров.
+
+Пример:
+
+```python
+from typing import Annotated
+
+from fastapi import Body
+from pydantic import BaseModel
+
+class Item(BaseModel):
+    name: str
+    price: float
+
+class User(BaseModel):
+    username: str
+
+@app.put("/items/{item_id}")
+def update_item(
+    item_id: int,
+    item: Item,
+    user: User,
+    importance: Annotated[int, Body(gt=0)],
+) -> dict:
+    return {
+        "item_id": item_id,
+        "item": item,
+        "user": user,
+        "importance": importance,
+    }
+```
+
+Тело запроса будет таким:
+
+```json
+{
+  "item": {
+    "name": "Keyboard",
+    "price": 99.9
+  },
+  "user": {
+    "username": "anna"
+  },
+  "importance": 5
+}
+```
+
+Почему body стал объектом с ключами `item`, `user`, `importance`:
+
+- body-параметров несколько;
+- FastAPI должен понять, какое значение какому параметру соответствует;
+- поэтому каждый параметр получает свой ключ.
+
+### `embed=True`
+
+Если body-параметр один, FastAPI обычно ожидает сам объект:
+
+```json
+{
+  "name": "Keyboard",
+  "price": 99.9
+}
+```
+
+Но можно заставить ожидать ключ:
+
+```python
+from typing import Annotated
+from fastapi import Body
+
+@app.post("/items")
+def create_item(item: Annotated[Item, Body(embed=True)]) -> Item:
+    return item
+```
+
+Тогда body:
+
+```json
+{
+  "item": {
+    "name": "Keyboard",
+    "price": 99.9
+  }
+}
+```
+
+Для новичка правило простое: обычно не нужен `embed=True`, пока API-контракт явно этого не требует.
+
+## 73. Nested Models и Extra Data Types
+
+### Вложенные модели
+
+Вложенная модель - это модель внутри модели.
+
+```python
+from pydantic import BaseModel, Field
+
+class Image(BaseModel):
+    url: str
+    name: str
+
+class Item(BaseModel):
+    name: str
+    price: float = Field(gt=0)
+    images: list[Image] = []
+```
+
+JSON:
+
+```json
+{
+  "name": "Phone",
+  "price": 799.0,
+  "images": [
+    {
+      "url": "https://example.com/phone.png",
+      "name": "front"
+    }
+  ]
+}
+```
+
+Почему это удобно:
+
+- сложные JSON-структуры описываются Python-классами;
+- FastAPI документирует вложенность;
+- ошибки показывают точное место.
+
+Ошибка может выглядеть так:
+
+```json
+{
+  "loc": ["body", "images", 0, "url"],
+  "msg": "Field required"
+}
+```
+
+Это значит: в body, в списке `images`, у первого элемента нет поля `url`.
+
+### Extra Data Types
+
+FastAPI через Pydantic поддерживает не только `str`, `int`, `float`, `bool`.
+
+Частые типы:
+
+```python
+from datetime import date, datetime
+from decimal import Decimal
+from uuid import UUID
+
+from pydantic import BaseModel, EmailStr
+
+class UserEvent(BaseModel):
+    id: UUID
+    email: EmailStr
+    created_at: datetime
+    birthday: date | None = None
+    amount: Decimal
+```
+
+Что это дает:
+
+- `UUID` проверяет формат уникального id;
+- `EmailStr` проверяет email;
+- `datetime` проверяет дату и время;
+- `date` проверяет дату без времени;
+- `Decimal` лучше для денег, чем `float`.
+
+Почему `float` плох для денег:
+
+- числа с плавающей точкой могут иметь погрешность;
+- для денег лучше `Decimal`;
+- в базе данных тоже обычно используют decimal/numeric типы.
+
+## 74. Header/Cookie Parameter Models и underscore conversion
+
+Официальная документация показывает не только отдельные `Header()` и `Cookie()`, но и модели параметров.
+
+### Header underscore conversion
+
+HTTP-header часто выглядит так:
+
+```http
+User-Agent: Mozilla/5.0
+X-Request-ID: abc-123
+```
+
+В Python нельзя удобно писать переменную с дефисом:
+
+```python
+user-agent = "bad"
+```
+
+Это будет синтаксическая ошибка, потому что `-` означает минус.
+
+Поэтому в Python пишут:
+
+```python
+from typing import Annotated
+from fastapi import Header
+
+@app.get("/headers")
+def read_headers(
+    user_agent: Annotated[str | None, Header()] = None,
+    x_request_id: Annotated[str | None, Header()] = None,
+) -> dict[str, str | None]:
+    return {"user_agent": user_agent, "x_request_id": x_request_id}
+```
+
+FastAPI автоматически сопоставляет:
+
+- `user_agent` -> `user-agent`;
+- `x_request_id` -> `x-request-id`.
+
+Это называется underscore conversion.
+
+### Cookie model
+
+```python
+from typing import Annotated
+
+from fastapi import Cookie
+from pydantic import BaseModel
+
+class CookieParams(BaseModel):
+    session_id: str
+    theme: str | None = None
+
+@app.get("/cookie-info")
+def cookie_info(cookies: Annotated[CookieParams, Cookie()]) -> CookieParams:
+    return cookies
+```
+
+Для новичка важно: cookies и headers - это не body и не query. Это отдельные части HTTP-запроса.
+
+## 75. Request Forms and Files
+
+JSON - не единственный формат запроса.
+
+### Login form
+
+OAuth2 password flow в документации использует form-data:
+
+```python
+from typing import Annotated
+from fastapi import Form
+
+@app.post("/login")
+def login(
+    username: Annotated[str, Form()],
+    password: Annotated[str, Form()],
+) -> dict[str, str]:
+    return {"username": username}
+```
+
+Почему не JSON:
+
+- OAuth2 password flow исторически использует form fields;
+- HTML-формы тоже отправляют form-data;
+- FastAPI явно отделяет `Form()` от JSON body.
+
+### File + Form
+
+```python
+from typing import Annotated
+from fastapi import File, Form, UploadFile
+
+@app.post("/profile")
+def update_profile(
+    display_name: Annotated[str, Form()],
+    avatar: Annotated[UploadFile, File()],
+) -> dict[str, str]:
+    return {
+        "display_name": display_name,
+        "filename": avatar.filename,
+    }
+```
+
+Тут запрос будет `multipart/form-data`, потому что в нем есть файл.
+
+Когда использовать:
+
+- загрузка аватара;
+- импорт CSV;
+- загрузка документов;
+- форма с текстом и файлом одновременно.
+
+## 76. Path Operation Configuration и Metadata
+
+Официальная документация показывает много настроек path operation.
+
+```python
+@app.get(
+    "/items/{item_id}",
+    tags=["items"],
+    summary="Read one item",
+    description="Return one item by ID. Raises 404 if the item does not exist.",
+    response_description="The requested item.",
+    deprecated=False,
+)
+def read_item(item_id: int) -> ItemRead:
+    ...
+```
+
+Разбор:
+
+- `tags` группирует endpoints.
+- `summary` коротко описывает операцию.
+- `description` объясняет подробнее.
+- `response_description` описывает успешный ответ.
+- `deprecated=True` помечает endpoint как устаревший.
+
+Почему `deprecated`:
+
+- deprecated - "устаревший, не рекомендуется";
+- endpoint еще работает;
+- но новых клиентов лучше переводить на другой.
+
+### Metadata приложения
+
+```python
+app = FastAPI(
+    title="FastAPI Learning",
+    summary="Учебное API",
+    description="Проект для пошагового изучения FastAPI.",
+    version="0.1.0",
+    docs_url="/docs",
+    redoc_url="/redoc",
+    openapi_url="/openapi.json",
+)
+```
+
+Что можно менять:
+
+- `docs_url=None` отключит Swagger UI;
+- `redoc_url=None` отключит ReDoc;
+- `openapi_url=None` отключит OpenAPI schema и docs.
+
+Для обучения лучше ничего не отключать. `/docs` - твой главный тренажер.
+
+## 77. JSON Compatible Encoder
+
+Официальная документация FastAPI показывает `jsonable_encoder`.
+
+Проблема: не все Python-объекты напрямую являются JSON.
+
+Например:
+
+```python
+from datetime import datetime
+
+data = {"created_at": datetime.now()}
+```
+
+`datetime` - Python-объект. В JSON нет типа datetime. Его нужно превратить в строку.
+
+FastAPI часто делает это автоматически в ответах. Но если ты сам сохраняешь данные, например в файл, cache или NoSQL-хранилище, может понадобиться:
+
+```python
+from datetime import datetime
+
+from fastapi.encoders import jsonable_encoder
+from pydantic import BaseModel
+
+class Event(BaseModel):
+    name: str
+    created_at: datetime
+
+event = Event(name="startup", created_at=datetime.now())
+json_data = jsonable_encoder(event)
+```
+
+`json_data` будет состоять из JSON-compatible типов:
+
+- `dict`;
+- `list`;
+- `str`;
+- `int`;
+- `float`;
+- `bool`;
+- `None`.
+
+Запомни: `jsonable_encoder` не обязательно превращает в JSON-строку. Он превращает в данные, которые можно безопасно сериализовать в JSON.
+
+## 78. Dependencies: official-глубина
+
+Официальная документация делит dependencies на несколько тем.
+
+### Простая dependency
+
+```python
+from typing import Annotated
+from fastapi import Depends
+
+def common_parameters(q: str | None = None, limit: int = 10) -> dict[str, str | int | None]:
+    return {"q": q, "limit": limit}
+
+@app.get("/items")
+def read_items(
+    commons: Annotated[dict[str, str | int | None], Depends(common_parameters)]
+) -> dict[str, str | int | None]:
+    return commons
+```
+
+### Sub-dependency
+
+Dependency может зависеть от другой dependency.
+
+```python
+def get_token_header(x_token: str) -> str:
+    return x_token
+
+def get_current_user(token: Annotated[str, Depends(get_token_header)]) -> dict[str, str]:
+    return {"token": token}
+```
+
+FastAPI сам построит цепочку вызовов.
+
+### Dependency в декораторе
+
+Иногда dependency нужна только ради проверки, а результат не нужен в функции.
+
+```python
+from fastapi import Depends
+
+def verify_token() -> None:
+    ...
+
+@app.get("/private", dependencies=[Depends(verify_token)])
+def private() -> dict[str, str]:
+    return {"status": "ok"}
+```
+
+Почему так:
+
+- endpoint остается чистым;
+- dependency выполняется;
+- но параметр в функцию не добавляется.
+
+### Global dependencies
+
+```python
+app = FastAPI(dependencies=[Depends(verify_token)])
+```
+
+Такая dependency применяется ко всем endpoints приложения.
+
+Для новичка осторожно: global dependencies легко забыть и потом удивляться, почему все endpoints требуют токен.
+
+### Classes as dependencies
+
+```python
+class CommonQueryParams:
+    def __init__(self, q: str | None = None, limit: int = 10):
+        self.q = q
+        self.limit = limit
+
+@app.get("/items")
+def read_items(commons: Annotated[CommonQueryParams, Depends(CommonQueryParams)]):
+    return {"q": commons.q, "limit": commons.limit}
+```
+
+Класс удобен, когда dependency имеет состояние или несколько связанных параметров.
+
+## 79. Security по официальной логике
+
+Официальный tutorial идет постепенно:
+
+1. Security - First Steps.
+2. Get Current User.
+3. Simple OAuth2 with Password and Bearer.
+4. OAuth2 with Password, hashing, Bearer with JWT.
+
+Новичку важно не прыгать сразу в JWT.
+
+### Шаг 1: схема токена
+
+```python
+from fastapi.security import OAuth2PasswordBearer
+
+oauth2_scheme = OAuth2PasswordBearer(tokenUrl="token")
+```
+
+Почему `tokenUrl="token"`:
+
+- это URL, куда клиент должен отправить username/password, чтобы получить token;
+- Swagger UI использует это для кнопки Authorize;
+- значение относительное, поэтому endpoint будет `/token`.
+
+### Шаг 2: получить token из header
+
+```python
+from typing import Annotated
+from fastapi import Depends
+
+@app.get("/me")
+def read_me(token: Annotated[str, Depends(oauth2_scheme)]) -> dict[str, str]:
+    return {"token": token}
+```
+
+FastAPI ожидает header:
+
+```http
+Authorization: Bearer something
+```
+
+### Шаг 3: current user
+
+```python
+def get_current_user(token: Annotated[str, Depends(oauth2_scheme)]) -> dict[str, str]:
+    return {"username": "demo", "token": token}
+
+@app.get("/users/me")
+def read_users_me(
+    current_user: Annotated[dict[str, str], Depends(get_current_user)]
+) -> dict[str, str]:
+    return current_user
+```
+
+### Шаг 4: реальная безопасность
+
+Для настоящего проекта нужны:
+
+- password hashing;
+- секретный ключ;
+- срок жизни токена;
+- проверка подписи JWT;
+- обработка истекшего токена;
+- роли или scopes;
+- HTTPS.
+
+Главное правило: security-код нельзя писать "примерно". Его нужно брать из официальной документации, понимать каждую строку и адаптировать осторожно.
+
+## 80. Static Files
+
+FastAPI может отдавать статические файлы: изображения, CSS, JavaScript.
+
+```python
+from fastapi.staticfiles import StaticFiles
+
+app.mount("/static", StaticFiles(directory="static"), name="static")
+```
+
+Структура:
+
+```text
+FASTAPI/
+├── main.py
+└── static/
+    ├── logo.png
+    └── style.css
+```
+
+После этого файл:
+
+```text
+static/logo.png
+```
+
+будет доступен по:
+
+```text
+http://127.0.0.1:8000/static/logo.png
+```
+
+Почему `mount`, а не `include_router`:
+
+- `include_router` добавляет API routes в OpenAPI;
+- `mount` подключает отдельное ASGI-приложение по префиксу;
+- static files не являются API endpoints в обычном смысле.
+
+Для backend API статические файлы часто не нужны, если frontend живет отдельно. Но для простых проектов, админок, демо и документации это полезно.
+
 ## Источники для актуализации
 
+Проверено и актуализировано по официальным источникам на **15 мая 2026**.
+
 - FastAPI documentation: https://fastapi.tiangolo.com/
+- FastAPI Tutorial - User Guide: https://fastapi.tiangolo.com/tutorial/
+- FastAPI First Steps: https://fastapi.tiangolo.com/tutorial/first-steps/
+- FastAPI Path Parameters: https://fastapi.tiangolo.com/tutorial/path-params/
+- FastAPI Query Parameters: https://fastapi.tiangolo.com/tutorial/query-params/
+- FastAPI Request Body: https://fastapi.tiangolo.com/tutorial/body/
+- FastAPI Query Parameter Models: https://fastapi.tiangolo.com/tutorial/query-param-models/
+- FastAPI Response Model: https://fastapi.tiangolo.com/tutorial/response-model/
+- FastAPI Dependencies: https://fastapi.tiangolo.com/tutorial/dependencies/
+- FastAPI Security: https://fastapi.tiangolo.com/tutorial/security/
+- FastAPI SQL Databases: https://fastapi.tiangolo.com/tutorial/sql-databases/
+- FastAPI Bigger Applications: https://fastapi.tiangolo.com/tutorial/bigger-applications/
+- FastAPI Testing: https://fastapi.tiangolo.com/tutorial/testing/
+- FastAPI Advanced User Guide: https://fastapi.tiangolo.com/advanced/
+- FastAPI CLI: https://fastapi.tiangolo.com/fastapi-cli/
 - FastAPI release notes: https://fastapi.tiangolo.com/release-notes/
 - FastAPI on PyPI: https://pypi.org/project/fastapi/
 - Pydantic documentation: https://docs.pydantic.dev/
