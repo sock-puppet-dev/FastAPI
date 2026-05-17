@@ -2,7 +2,7 @@
 
 Актуально на **15 мая 2026** для этого проекта:
 
-- Python: `>=3.14` из `pyproject.toml`
+- Python: `>=3.12` из `pyproject.toml`
 - FastAPI: `0.136.1`
 - Pydantic: `2.13.3`
 - Starlette: `1.0.0`
@@ -48,6 +48,29 @@
 - **Усложнять**: добавить проверку, ошибку, модель, тест.
 
 Если ты можешь объяснить код без подсказки, ты его действительно выучил.
+
+## Быстрая навигация
+
+Если ты открыл учебник впервые, читай так:
+
+1. **Старт**: главы 1-7.
+2. **Первый код**: главы 8-16.
+3. **Документация и проверка API**: главы 22-23, 45, 47-48.
+4. **Архитектура**: главы 13, 17-18, 55, 78.
+5. **Практика**: главы 35-38, 65-67 и файл `EXERCISES.md`.
+6. **Продвинутые темы**: главы 24-30, 56-64, 71-80.
+
+Если нужно быстро найти тему:
+
+- `Path / Query / Body` - главы 7-8.
+- `Pydantic` - главы 9, 73.
+- `Ошибки 404/422` - главы 11-12, 45, 54.
+- `response_model` - главы 10, 49.
+- `Depends` - главы 13, 78.
+- `APIRouter` - главы 17-18.
+- `Тесты` - главы 22, 59.
+- `Безопасность` - главы 28, 58, 79.
+- `База данных` - главы 20-21, 56-57.
 
 ## Строгая структура учебника
 
@@ -176,7 +199,11 @@
 ```text
 FASTAPI/
 ├── main.py
+├── tests/
+│   └── test_main.py
 ├── README.md
+├── EXERCISES.md
+├── GUIDE.md
 ├── pyproject.toml
 ├── uv.lock
 ├── .gitignore
@@ -189,24 +216,44 @@ FASTAPI/
 ```python
 from fastapi import FastAPI
 
-app = FastAPI()
+app = FastAPI(
+    title="FastAPI Learning",
+    version="0.1.0",
+    description="Учебное API для пошагового изучения FastAPI.",
+)
 
-@app.get("/")
+
+@app.get("/", tags=["root"], summary="Root endpoint")
 def home() -> dict[str, str]:
     return {"message": "Hello from FastAPI Cloud"}
+
+
+@app.get("/health", tags=["health"], summary="Health check")
+def health() -> dict[str, str]:
+    return {"status": "ok"}
+
+
+@app.get("/items/{item_id}", tags=["items"], summary="Read one item")
+def read_item(item_id: int, q: str | None = None) -> dict[str, int | str | None]:
+    return {"item_id": item_id, "q": q}
 ```
 
 Разбор построчно:
 
 - `from fastapi import FastAPI` импортирует главный класс приложения. `FastAPI` пишется с большой буквы, потому что это класс. Классы в Python обычно пишут в стиле `PascalCase`: каждое слово с большой буквы.
-- `app = FastAPI()` создает объект приложения. Имя `app` - сокращение от `application`, то есть "приложение". Это стандартное имя, потому что серверу нужно знать, какой объект запускать.
-- `@app.get("/")` регистрирует обработчик HTTP-метода `GET` для пути `/`.
+- `app = FastAPI(...)` создает объект приложения. Имя `app` - сокращение от `application`, то есть "приложение". Это стандартное имя, потому что серверу нужно знать, какой объект запускать.
+- `title`, `version`, `description` попадают в OpenAPI-документацию и видны на `/docs`.
+- `@app.get("/", tags=["root"], summary="Root endpoint")` регистрирует обработчик HTTP-метода `GET` для пути `/`.
 - `@` в Python означает **декоратор**. Декоратор оборачивает функцию или регистрирует ее где-то. В FastAPI декоратор говорит: "эта функция отвечает на такой-то HTTP-запрос".
 - `get` называется так из-за HTTP-метода `GET`. Он используется, когда клиент хочет **получить** данные.
 - `"/"` - корневой путь сайта/API. Его часто называют `root`, потому что это "корень" дерева URL.
+- `tags=["root"]` группирует endpoint в документации.
+- `summary="Root endpoint"` дает короткое описание endpoint в `/docs`.
 - `def home()` объявляет обычную Python-функцию. Имя `home` значит "домашняя страница". В учебниках FastAPI часто используют `read_root`: `read` потому что `GET` читает данные, `root` потому что путь `/`.
 - `-> dict[str, str]` - аннотация возвращаемого типа. Она говорит: функция вернет словарь, где ключи - строки и значения - строки.
 - `return {"message": "Hello from FastAPI Cloud"}` возвращает Python-словарь. FastAPI автоматически превращает его в JSON.
+- `health()` - простой endpoint для проверки, что приложение живо.
+- `read_item(item_id: int, q: str | None = None)` показывает официальный базовый паттерн FastAPI: path-параметр `item_id` и необязательный query-параметр `q`.
 
 ### `pyproject.toml`
 
@@ -214,14 +261,24 @@ def home() -> dict[str, str]:
 [project]
 name = "fastapi-learning"
 version = "0.1.0"
-requires-python = ">=3.14"
+requires-python = ">=3.12"
 dependencies = [
     "fastapi[standard]>=0.136.1",
     "uvicorn[standard]>=0.46.0",
 ]
 
+[dependency-groups]
+dev = [
+    "pytest>=9.0.3",
+]
+
 [tool.fastapi]
 entrypoint = "main:app"
+
+[tool.pytest.ini_options]
+pythonpath = [
+    ".",
+]
 ```
 
 Разбор:
@@ -231,12 +288,17 @@ entrypoint = "main:app"
 - `[project]` - секция с метаданными проекта.
 - `name` - имя пакета/проекта.
 - `version` - версия твоего проекта, не FastAPI.
-- `requires-python = ">=3.14"` значит: проект рассчитан на Python 3.14 или новее.
+- `requires-python = ">=3.12"` значит: проект рассчитан на Python 3.12 или новее. FastAPI поддерживает и более старые версии Python, но для учебного проекта выбран современный и достаточно доступный минимум.
 - `dependencies` - зависимости, то есть внешние библиотеки.
 - `fastapi[standard]` - FastAPI с "standard"-набором дополнительных зависимостей. Квадратные скобки в Python-зависимостях называют **extras**. Это дополнительные возможности пакета.
 - `uvicorn[standard]` - Uvicorn с расширенным набором зависимостей для удобного и быстрого запуска.
+- `[dependency-groups]` хранит группы зависимостей для разработки.
+- `dev` - development, зависимости для разработки, которые не являются частью runtime-логики приложения.
+- `pytest` нужен для запуска тестов.
 - `[tool.fastapi]` - секция настроек инструмента FastAPI CLI.
 - `entrypoint = "main:app"` значит: искать файл `main.py`, а внутри него объект `app`.
+- `[tool.pytest.ini_options]` - настройки pytest.
+- `pythonpath = ["."]` помогает тестам импортировать `main.py` из корня проекта.
 
 Почему именно `main:app`:
 
@@ -271,7 +333,9 @@ entrypoint = "main:app"
 
 В проекте также есть несколько служебных элементов:
 
-- `README.md` - короткое описание проекта. Сейчас оно минимальное, а главным учебным документом становится этот `GUIDE.md`.
+- `README.md` - входная точка проекта: что это, как запустить, где читать учебник.
+- `EXERCISES.md` - отдельный файл с практическими заданиями.
+- `tests/` - автоматические проверки учебного приложения.
 - `.gitignore` - список файлов и папок, которые Git не должен добавлять в историю. Здесь игнорируются `.venv/`, `.idea/`, `.env`, `.DS_Store`, `__pycache__/` и скомпилированные Python-файлы.
 - `.venv/` - локальное виртуальное окружение. `venv` - сокращение от `virtual environment`. В нем лежат установленные зависимости проекта.
 - `__pycache__/` - cache скомпилированных Python-файлов. Python создает его сам для ускорения импортов.
@@ -1348,6 +1412,15 @@ def test_home() -> None:
     response = client.get("/")
     assert response.status_code == 200
     assert response.json() == {"message": "Hello from FastAPI Cloud"}
+
+def test_health() -> None:
+    response = client.get("/health")
+    assert response.status_code == 200
+    assert response.json() == {"status": "ok"}
+
+def test_item_id_validation_error() -> None:
+    response = client.get("/items/not-an-int")
+    assert response.status_code == 422
 ```
 
 Почему `client`:
@@ -1360,10 +1433,9 @@ def test_home() -> None:
 - `assert` проверяет ожидание;
 - если ожидание неверное, тест падает.
 
-Чтобы запускать тесты, обычно добавляют `pytest`:
+В этом проекте `pytest` уже добавлен в `dev`-зависимости. Запуск:
 
 ```bash
-uv add --dev pytest
 uv run pytest
 ```
 
